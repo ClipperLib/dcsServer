@@ -1,0 +1,23 @@
+{
+  "name": "sama_dcs_server",
+  "version": "1.0.0",
+  "description": "dcs에서 수신된 정보를 Database에 기록",
+  "main": "init.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ClipperLib"
+  },
+  "keywords": [
+    "dcs",
+    "tcpServer",
+    "net"
+  ],
+  "author": "bonohemi",
+  "license": "ISC",
+  "dependencies": {
+    "zero-fill": "^2.2.3"
+  }
+}
