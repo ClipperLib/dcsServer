@@ -26,13 +26,10 @@ var Request = require('tedious').Request;
     function executeStatement() {
         request = new Request(
 		//	"select * from com_alarm;",
-		" select * \
-		from ( \
-			SELECT TOP 5 CONVERT(varchar(19), LOG_DATE, 121) as DT, * \
+
+		"SELECT TOP 5 CONVERT(varchar(19), LOG_DATE, 121) as DT, * \
 			FROM COM_ALARM \
-			WHERE TASK_ID LIKE 'C%' ORDER BY LOG_DATE DESC \
-		) a \
-		order by dt asc",
+			WHERE TASK_ID LIKE 'C%' ORDER BY LOG_DATE DESC;",
 			function(err) {
         if (err) {
             console.log(err);}
