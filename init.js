@@ -53,7 +53,6 @@ server.on('connection', (socket) => {
 
 console.log(`Server started at: ${ADDRESS}:${PORT}`)
 
-
 function dcsDataInsert( sDcsData ) {
 	//console.log(`index/data : [${index}][${item}]:${typeof item}`)
 	console.log(`index/data : [${sDcsData}`)
