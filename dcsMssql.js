@@ -105,14 +105,46 @@ exports.dcsInsert = async function (dcsData) {
 		'${dcsData.dcs_data}'
 	)
 	`
-
 	oml(strSql)
+
+	strSql = `
+	INSERT INTO mes.SMES_DCS_IF_DATA2(
+	DCS_IF_SVR_IP,
+	FACT_CD,
+	MCH_CD,
+	MCH_TIM,
+	DCS_IF_DATA
+	) VALUES (
+	'200.101.103.13',
+		'PL60',
+		'CC07',
+		getdate(),
+		'${dcsData.dcs_data}'
+	)
+	`
+
+	strSql = ""
+	strSql += "INSERT INTO mes.SMES_DCS_IF_DATA2("
+	strSql += "DCS_IF_SVR_IP,"
+	strSql += "FACT_CD, "
+	strSql += "MCH_CD, "
+	strSql += "MCH_TIM,"
+	strSql += "DCS_IF_DATA "
+	strSql += ") VALUES ( "
+	strSql += "'200.101.103.13',"
+	strSql += "	'PL60',"
+	strSql += "	'CC07',"
+	strSql += "	getdate(),"
+	strSql += "	@str_if_data"
+	strSql += ")"
 
 	try {
 		await connectionPool.connect()
 		let request = await connectionPool.request()
 
-		//request.input('str_if_data', mssql.VarChar, dcsData)
+		//request.addParameter('str_if_data', mssql.TYPES.VarChar, dcsData.dcs_data)
+		//dcsData.dcs_data = '김성국'
+		request.input('str_if_data', mssql.TYPES.VarChar, dcsData.dcs_data)
 
 		let result = await request.query(strSql)
 		return {success: result}
@@ -123,6 +155,64 @@ exports.dcsInsert = async function (dcsData) {
 	} finally {
 		connectionPool.close();
 	}
+}
+
+
+exports.dcsInsertTedious = (dcsData) => {
+
+	let tedious = require('tedious')
+	let tediousConnection = require('tedious').Connection
+	let tediousRequest = require('tedious').Request
+	let TYPE = require('tedious').TYPES
+	/*
+	let tediousConnection = tedious.Connection
+	let tediousRequest = tedious.request
+	let TYPE = tedious.TYPES
+	*/
+	//let connection = new tediousConnection(current_config)
+	let connection = new tediousConnection({
+		server: '200.101.103.133',
+		userName: 'mes13',
+		password: 'mes13',
+		options:{
+			port: '1433',
+			database: 'mesga',
+			instantName: 'nodejs DCS Server',
+			appName:'DCS_IF'
+		}
+	})
+
+	connection.on('connect', err => {
+		let strSql = ''
+
+		strSql += "INSERT INTO mes.SMES_DCS_IF_DATA2("
+		strSql += "DCS_IF_SVR_IP,"
+		strSql += "FACT_CD, "
+		strSql += "MCH_CD, "
+		strSql += "MCH_TIM,"
+		strSql += "DCS_IF_DATA "
+		strSql += ") VALUES ( "
+		strSql += "@dcs_if_svr_ip,"
+		strSql += "@fact_cd,"
+		strSql += "@mch_cd,"
+		strSql += "@mch_tim,"
+		strSql += "@str_if_data"
+		strSql += ")"
+
+		let request = new tediousRequest(strSql, err => {
+			if (err) {
+				oml(err);
+			}
+		})
+
+		oml(dcsData)
+		request.addParameter('dcs_if_svr_ip',TYPE.VarChar,dcsData.dcs_server_ip)
+		request.addParameter('fact_cd',TYPE.VarChar,dcsData.dcs_fact_cd)
+		request.addParameter('mch_cd',TYPE.VarChar,dcsData.dcs_data_mch_cd)
+		request.addParameter('mch_tim',TYPE.VarChar,dcsData.dcs_data_mch_dt)
+		request.addParameter('str_if_data',TYPE.VarChar,dcsData.dcs_data)
+		connection.execSql(request)
+	})
 }
 
 

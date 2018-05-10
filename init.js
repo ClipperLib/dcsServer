@@ -131,22 +131,23 @@ function dcsDataInsert( poDcsData ) {
 	oml(poDcsData.dcs_data_stts)
 
 	// 데이터 파싱이 완료 되었으므로 데이터베이스에 기록한다.
-	let dcsMssql = require('./dcsMssal.js')
+	let dcsMssql = require('./dcsMssql.js')
 	//let dcsOracle = require('./dcsOracle.js')
 
-
-	/*
-	dscMssql = dcsInsert(poDcsData).then( result => {
+	dcsMssql.dcsInsertTedious(poDcsData)
+	/*////////////////////////////////////////////////////
+	dcsMssql.dcsInsert(poDcsData).then( result => {
 		if (result.success) {
 			oml(result.success)
 		} else if (result.error) {
+			oml('오류')
 			oml(result.error)
 		} else {
+			oml('예외')
 			oml(result)
 		}
 	})
-	*/
-
+	//*////////////////////////////////////////////////////
 
 }
 
