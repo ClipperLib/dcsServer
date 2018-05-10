@@ -11,20 +11,17 @@ dcsDataJson = {
 	"dcs_data":{},
 	"dcs_data_vals":{},
 	"dcs_data_stts":{},
-	"dcs_data_info":{
-		"PL50_MCH_DATA_INFO":{},
-		"PL60_MCH_DATA_INFO":{}
-	}
+	"dcs_data_info":{}
 }
 
 // VAL_01 ~ VAL_40
 for (let element_cnt = 1; element_cnt <= 40; element_cnt++) {
-	dcsDataJson.dcs_data_vals["VAL_"+zf(2,element_cnt)] = 0
+	dcsDataJson.dcs_data_vals["VAL_"+zf(2,element_cnt)] = null
 }
 
 // STT_01 ~ STT_20
 for (let element_cnt = 1; element_cnt <= 20; element_cnt++) {
-	dcsDataJson.dcs_data_stts["STT_"+zf(2,element_cnt)] = ''
+	dcsDataJson.dcs_data_stts["STT_"+zf(2,element_cnt)] = null
 }
 
 /*//////////
@@ -55,19 +52,20 @@ for(var myKey in myJson) {
 
 //*////////
 
-// 가공 설비별 데이터 구조
-let apMchDataInfo = {
-		"PL60_CC07":{"val_len":19, "stt_pos":[1,1]},
-		"PL60_LE01":{"val_len":00, "stt_pos":[0,1,1]}
+//dcsDataJson.dcs_data_info = aMchDataInfo
+dcsDataJson.dcs_data_info = {
+	// 가공 설비별 데이터 구조
+	"PL60_CC07":{"val_cnt":19, "stt_pos":[0,1,1]},
+	"PL60_LE01":{"val_cnt":10, "stt_pos":[1,1]},
+	// 압연 설비별 데이터 구조
+	"PL50_CC07":{"val_cnt":19, "stt_pos":[1,1]},
+	"PL50_LE01":{"val_cnt":10, "stt_pos":[0,1,1]}
 }
 
-// 압연 설비별 데이터 구조
-let gaMchDataInfo = {
-}
-
-dcsDataJson.dcs_data_info.PL60_MCH_DATA_INFO = apMchDataInfo
 module.exports = dcsDataJson
 
-//console.log(('0000'+20).slice(-4))
-console.log(dcsDataJson)
+if (require.main === module ) {
+	//console.log(('0000'+20).slice(-4))
+	console.log(dcsDataJson)
+}
 

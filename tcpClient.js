@@ -46,9 +46,10 @@ client.on('connect', function onConnect() {
     console.log('onConnect')
 	this.setNoDelay(true)
 	this.setEncoding('utf8')
-	for (let i = 1 ; i <= 1000000 ; i++) {
+	for (let i = 1 ; i <= 1 ; i++) {
 		//this.write('클라이언트가 보낸 메시지.')
-		this.write(`WC:[${i}]:${dcsData}`)
+		//this.write(`WC:[${i}]:${dcsData}`)
+		this.write(dcsData)
 	}
 	client.end()
 })
